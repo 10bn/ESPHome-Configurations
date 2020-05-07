@@ -1,6 +1,7 @@
-#
-# gosund sp111 smart plug with power sensor
-#
+# Gosund SP111 smart plug with power sensor
+# The physical button toggles the relay
+# The blue and red led can be switched separately.
+
 # Enable Web server
 web_server:
   port: 80
@@ -47,7 +48,7 @@ ota:
 time:
   - platform: homeassistant
     id: homeassistant_time
-    
+
 binary_sensor:
   - platform: gpio
     pin:
@@ -56,7 +57,7 @@ binary_sensor:
     name: "${plug_name}_button"
     on_press:
       - switch.toggle: relay
-      
+
 switch:
 - platform: gpio
   name: "${plug_name}_Relay"
@@ -106,7 +107,7 @@ sensor:
         # Multiplication factor from W to kW is 0.001
         - multiply: 0.001
     unit_of_measurement: kWh
-      
+
 # Extra sensor to keep track of plug uptime
   - platform: uptime
     name: ${plug_name}_Uptime Sensor
