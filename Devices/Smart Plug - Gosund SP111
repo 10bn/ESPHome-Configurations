@@ -7,7 +7,7 @@ web_server:
   port: 80
 #
 substitutions:
-  plug_name: socket_gerrit1
+  plug_name: plugname
   # Higher value gives lower watt readout
   current_res: "0.0012"
   # Lower value gives lower voltage readout
@@ -21,10 +21,8 @@ esphome:
 # WiFi connection
 wifi:
   networks:
-  - ssid: "abubu"
-    password: "abubu111"
-  - ssid: "wlan1"
-    password: "braunkohlekraftwerk2"
+  - ssid: "wehavenowifi"
+    password: "areyouserious"
 
   # Optional manual IP
 #  manual_ip:
@@ -34,8 +32,8 @@ wifi:
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "Socket-Gerrit1 Fallback Hotspot"
-    password: "abubu111"
+    ssid: "${plug_name}_AP"
+    password: "${plug_name}"
 
 # Enable logging
 logger:
