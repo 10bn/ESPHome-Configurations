@@ -1,0 +1,68 @@
+substitutions:
+  device_name: bulb_name
+  friendly_name: bulb_friendly_name
+  
+# Basic Config
+esphome:
+  name: "${device_name}"
+  platform: ESP8266
+  board: esp01_1m
+  includes:
+    - includes/athom_15w.h
+
+#Wifi
+wifi:
+  networks:
+  - ssid: wifi_name
+    password: wifi_password
+  fast_connect: true
+
+
+  #Access Point
+  ap:
+    ssid:   ap:
+    ssid: "${device_name}"
+    password: wifi_ap_password
+
+#Captive Portal when ap is on
+captive_portal:
+
+#Web Server for manual access 
+web_server:
+
+#Log to ESPHome
+logger:
+
+#Homeassitant API
+api:
+
+#ESPHome OTA
+ota:
+
+output:
+  - platform: esp8266_pwm
+    pin: GPIO13
+    id: out_ct
+  - platform: esp8266_pwm
+    pin: GPIO5
+    id: out_ctbrightness
+  - platform: esp8266_pwm
+    pin: GPIO4
+    id: out_red
+  - platform: esp8266_pwm
+    pin: GPIO12
+    id: out_green
+  - platform: esp8266_pwm
+    pin: GPIO14
+    id: out_blue
+
+
+light:
+  - platform: custom 
+    lambda: |- 
+      auto light_out = new RGBWCT(id(out_ct),id(out_ctbrightness),id(out_red),id(out_green),id(out_blue)); 
+      return {light_out}; 
+    lights: 
+      - name: "${friendly_name}"
+        gamma_correct: 0
+        
