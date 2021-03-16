@@ -1,0 +1,68 @@
+#Variables
+substitutions:
+  device_name:  bedroom_yeelight_ceiling
+  friendly_name: Bedroom Ceiling
+
+esphome:
+  name: ${device_name}
+  platform: ESP32
+  board: esp32doit-devkit-v1
+  platformio_options:
+    platform: espressif32@3.0.0
+    platform_packages: |-4
+          framework-arduinoespressif32 @ https://github.com/Jason2866/esp32-arduino-lib-builder/raw/framework-arduinoespressif32/framework-arduinoespressif32-release_v3.3-solo1-bd65eb8d1.tar.gz
+
+#wifi:
+#  use_address: 10.25.30.105
+
+packages:
+  #Wifi Settings
+  wifi: !include includes/network.yaml
+
+  
+sensor:
+  - platform: adc
+    pin: GPIO36
+    name: "${friendly_name} adc1"
+    attenuation: 11db
+  - platform: adc
+    pin: GPIO32
+    name: "${friendly_name} adc2"
+    attenuation: 11db
+
+output:
+  - platform: ledc
+    pin: GPIO19
+    id: output_warm
+    frequency: 4882Hz
+
+  - platform: ledc
+    pin: GPIO21
+    id: output_cold
+    frequency: 4882Hz
+
+  - platform: ledc
+    pin: GPIO23
+    id: output_nightlight
+    frequency: 9765Hz
+
+
+light:
+  - platform: monochromatic
+    name: "${friendly_name} Nightlight"
+    id: night_light
+    output: output_nightlight
+    gamma_correct: 0
+    on_turn_on:
+      - light.turn_off: ceiling_light
+  - platform: cwww
+    name: "${friendly_name}"
+    id: ceiling_light
+    cold_white: output_cold
+    warm_white: output_warm
+    cold_white_color_temperature: 6500 K
+    warm_white_color_temperature: 2700 K
+    gamma_correct: 0
+    constant_brightness: on
+    on_turn_on:
+      - light.turn_off: night_light
