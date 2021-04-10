@@ -45,8 +45,8 @@ class RGBWCT : public Component, public LightOutput {
             }
 
             //write brightness and color temp for color light
-            //this->brightness_->set_level(0); //No color white mix
             else{
+                //this->brightness_->set_level(0); //No color white mix
                 this->brightness_->set_level(white); //mix white into color
                 this->cw_white_color_->set_level(0);
             }
