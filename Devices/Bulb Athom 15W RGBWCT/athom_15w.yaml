@@ -7,9 +7,7 @@ esphome:
   name: "${device_name}"
   platform: ESP8266
   board: esp01_1m
-  includes:
-    - includes/athom_15w.h
-
+ 
 #Wifi
 wifi:
   networks:
@@ -43,6 +41,7 @@ output:
   - platform: esp8266_pwm
     pin: GPIO13
     id: out_ct
+    inverted: true
   - platform: esp8266_pwm
     pin: GPIO5
     id: out_ctbrightness
@@ -58,11 +57,14 @@ output:
 
 
 light:
-  - platform: custom 
-    lambda: |- 
-      auto light_out = new RGBWCT(id(out_ct),id(out_ctbrightness),id(out_red),id(out_green),id(out_blue)); 
-      return {light_out}; 
-    lights: 
-      - name: "${friendly_name}"
-        gamma_correct: 0
-        
+  - platform: rgbct
+    name: $friendly_name
+    id: $device_name
+    red: out_red
+    green: out_green
+    blue: out_blue
+    color_temperature: out_ct
+    white_brightness: out_ctbrightness
+    cold_white_color_temperature: 6000 K
+    warm_white_color_temperature: 3000 K
+    color_interlock: true
